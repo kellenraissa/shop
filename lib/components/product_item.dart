@@ -1,61 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shop/models/cart.dart';
 import 'package:shop/models/product.dart';
-import 'package:shop/utils/app_routes.dart';
 
 class ProductItem extends StatelessWidget {
-  const ProductItem({super.key});
+  final Product product;
+
+  const ProductItem(this.product, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context, listen: false);
-    final cart = Provider.of<Cart>(context);
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: GridTile(
-        footer: GridTileBar(
-          backgroundColor: Colors.black87,
-          leading: Consumer<Product>(
-            // child: Column(
-            //   children: [
-            //     Text("Algo que nunca muda"),
-            //     Text(
-            //       "Child que pode passar no consumer como um widget como algo que nunca vai ser re-renderizado",
-            //     ),
-            //     Text("Algo que nunca muda"),
-            //   ],
-            // ),
-            builder: (ctx, product, child) => IconButton(
-              onPressed: () {
-                product.toggleFavorite();
-              },
-
-              icon: Icon(
-                product.isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: Theme.of(context).canvasColor,
-              ),
+    return ListTile(
+      leading: CircleAvatar(backgroundImage: NetworkImage(product.imageUrl)),
+      title: Text(product.name),
+      trailing: Container(
+        width: 100,
+        child: Row(
+          children: [
+            IconButton(
+              onPressed: () {},
+              color: Theme.of(context).primaryColor,
+              icon: Icon(Icons.edit),
             ),
-          ),
-          title: Text(product.name, textAlign: TextAlign.center),
-          trailing: IconButton(
-            onPressed: () {
-              cart.addItem(product);
-            },
-            icon: Icon(
-              Icons.shopping_cart,
-              color: Theme.of(context).canvasColor,
+            IconButton(
+              onPressed: () {},
+              color: Theme.of(context).colorScheme.error,
+              icon: Icon(Icons.delete),
             ),
-          ),
-        ),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.of(
-              context,
-            ).pushNamed(AppRoutes.PRODUCT_DETAIL, arguments: product);
-          },
-          child: Image.network(product.imageUrl, fit: BoxFit.cover),
+          ],
         ),
       ),
     );
