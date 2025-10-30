@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/exceptions/http_exception.dart';
 import 'package:shop/models/cart.dart';
 import 'package:shop/models/product.dart';
+import 'package:shop/models/product_list.dart';
 import 'package:shop/utils/app_routes.dart';
 
 class ProductGridItem extends StatelessWidget {
@@ -9,6 +11,7 @@ class ProductGridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final msg = ScaffoldMessenger.of(context);
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context);
 
@@ -28,8 +31,16 @@ class ProductGridItem extends StatelessWidget {
             //   ],
             // ),
             builder: (ctx, product, child) => IconButton(
-              onPressed: () {
-                product.toggleFavorite();
+              onPressed: () async {
+                try {
+                  Provider.of<ProductList>(
+                    context,
+                    listen: false,
+                  ).toggleFavoriteProduct(product);
+                  // product.toggleFavorite();
+                } on HttpException catch (error) {
+                  msg.showSnackBar(SnackBar(content: Text(error.msg)));
+                }
               },
 
               icon: Icon(
