@@ -32,11 +32,14 @@ class ProductsPage extends StatelessWidget {
         onRefresh: () => _refreshProducts(context),
         child: Padding(
           padding: const EdgeInsets.all(8),
-          child: ListView.builder(
-            itemCount: products.itemsCount,
-            itemBuilder: (ctx, i) =>
-                Column(children: [ProductItem(products.items[i]), Divider()]),
-          ),
+          child: products.itemsCount < 0
+              ? Container()
+              : ListView.builder(
+                  itemCount: products.itemsCount,
+                  itemBuilder: (ctx, i) => Column(
+                    children: [ProductItem(products.items[i]), Divider()],
+                  ),
+                ),
         ),
       ),
     );

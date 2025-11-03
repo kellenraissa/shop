@@ -5,4 +5,5 @@ class AppRoutes {
   static const PRODUCT_FORM = '/product-form';
   static const CART = '/cart';
   static const ORDERS = '/orders';
+  static const AUTH = '/auth';
 }
